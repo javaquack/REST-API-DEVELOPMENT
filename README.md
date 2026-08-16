@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Kinetrexa REST API
 
 A secure, high-performance RESTful API built with **FastAPI**, **SQLAlchemy ORM**, and **MySQL**. It features JWT authentication, strict input validation using Pydantic, proper error handling, automatic OpenAPI/Swagger documentation, and full CRUD operations for a Product Management catalog.
@@ -95,3 +96,6 @@ A ready-to-import Postman Collection file `postman_collection.json` is provided 
 3. Select `postman_collection.json` from the project folder.
 4. Once imported, the collection contains two folders: **Authentication** and **Products**.
 5. Log in using the **User Login** request. The Postman collection contains a script that automatically saves the JWT access token to the collection variables, meaning you do not have to copy-paste the token manually to run subsequent requests.
+=======
+# REST-API-DEVELOPMENT
+>>>>>>> cb281783cce53c93571c719e00bae7cd83d50eac

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: kinetrexa-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false # User will be prompted to enter their MySQL URL during creation
+      - key: SECRET_KEY
+        generateValue: true # Render will automatically generate a secure secret key
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"

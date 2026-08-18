@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Kinetrexa REST API
 
 A secure, high-performance RESTful API built with **FastAPI**, **SQLAlchemy ORM**, and **MySQL**. It features JWT authentication, strict input validation using Pydantic, proper error handling, automatic OpenAPI/Swagger documentation, and full CRUD operations for a Product Management catalog.
@@ -22,6 +21,7 @@ A secure, high-performance RESTful API built with **FastAPI**, **SQLAlchemy ORM*
 - **Database Driver**: PyMySQL
 - **Database**: MySQL
 - **Security**: PyJWT/python-jose (JWT tokens), bcrypt (password hashing)
+- **Deployment**: Render
 
 ---
 
@@ -37,7 +37,7 @@ A secure, high-performance RESTful API built with **FastAPI**, **SQLAlchemy ORM*
 ### 2. Installation
 Clone or navigate to the project directory, then install the required dependencies:
 ```bash
-pip install fastapi uvicorn sqlalchemy pymysql cryptography python-dotenv python-jose python-multipart bcrypt
+pip install -r requirements.txt
 ```
 
 ### 3. Environment Configuration
@@ -96,6 +96,32 @@ A ready-to-import Postman Collection file `postman_collection.json` is provided 
 3. Select `postman_collection.json` from the project folder.
 4. Once imported, the collection contains two folders: **Authentication** and **Products**.
 5. Log in using the **User Login** request. The Postman collection contains a script that automatically saves the JWT access token to the collection variables, meaning you do not have to copy-paste the token manually to run subsequent requests.
-=======
-# REST-API-DEVELOPMENT
->>>>>>> cb281783cce53c93571c719e00bae7cd83d50eac
+
+---
+
+## Deployment to Render
+
+This project includes a `render.yaml` Blueprint for automated deployment to [Render](https://render.com).
+
+### Prerequisites
+- A **hosted MySQL database** (Render does not provide MySQL natively). You can use a free-tier MySQL provider such as:
+  - [Clever Cloud](https://www.clever-cloud.com/)
+  - [Aiven](https://aiven.io/)
+  - [Railway](https://railway.app/)
+  - [FreeSQLDatabase](https://www.freesqldatabase.com/)
+
+### Deployment Steps
+1. **Push your code** to GitHub (this repository).
+2. Go to [https://dashboard.render.com](https://dashboard.render.com) and sign in.
+3. Click **New** > **Web Service**.
+4. Connect your GitHub repository (`javaquack/REST-API-DEVELOPMENT`).
+5. Render will auto-detect the `render.yaml` configuration. If not, manually configure:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+6. Under the **Environment** tab, add the following environment variables:
+   - `DATABASE_URL` — Your hosted MySQL connection string (e.g., `mysql+pymysql://user:pass@host:port/dbname`)
+   - `SECRET_KEY` — A secure random string for JWT signing
+   - `ALGORITHM` — `HS256`
+   - `ACCESS_TOKEN_EXPIRE_MINUTES` — `60`
+7. Click **Deploy**. Render will install dependencies and start the server.
+8. Once deployed, your API will be accessible at `https://your-service-name.onrender.com/docs`.

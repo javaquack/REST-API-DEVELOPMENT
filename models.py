@@ -1,6 +1,13 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean, DateTime, ForeignKey, func
+from datetime import datetime, timezone
+from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
+
+
+def utc_now():
+    """Return current UTC time for default column values."""
+    return datetime.now(timezone.utc)
+
 
 class User(Base):
     __tablename__ = "users"
@@ -11,8 +18,8 @@ class User(Base):
     full_name = Column(String(100), nullable=True)
     is_active = Column(Boolean, default=True)
     
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)
 
     # Relationship to products created by this user
     products = relationship("Product", back_populates="owner", cascade="all, delete-orphan")
@@ -30,8 +37,8 @@ class Product(Base):
     
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)
 
     # Relationship back to the owner (User)
     owner = relationship("User", back_populates="products")
